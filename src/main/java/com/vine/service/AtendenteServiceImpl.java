@@ -2,9 +2,12 @@ package com.vine.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.vine.model.Atendente;
 import com.vine.repository.AtendenteRepository;
 
+@Service
 public class AtendenteServiceImpl implements AtendenteService{
 	
 	public AtendenteRepository dao;

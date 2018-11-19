@@ -2,6 +2,7 @@ package com.vine.service;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,18 @@ public class MedicoServiceImpl implements MedicoService {
 	
 	@Override
 	public Medico fetchById(Long id) {
-		return dao.getOne(id);
+		Medico medico = dao.getOne(id);
+		if(!Hibernate.isInitialized(medico.getAgendas()))
+			Hibernate.initialize(medico.getAgendas());
+	
+		medico.getAgendas();
+		return medico;
 	}
 
 	@Override
 	public List<Medico> fetchAll() {
+		
+		
 		return dao.findAll(); 
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vine.dto.AtendenteDTO;
-import com.vine.dto.AtendenteDTO;
 import com.vine.model.Atendente;
 import com.vine.service.AtendenteService;
 
@@ -22,17 +22,18 @@ import com.vine.service.AtendenteService;
 @RequestMapping("/atendentes")
 public class AtendenteController {
 
+	@Autowired
 	public AtendenteService service;
 	
 	@GetMapping
 	public ResponseEntity<List<AtendenteDTO>> getAtendentes() {
 		ModelMapper mapper = new ModelMapper();
 		
-		List<Atendente> Atendentes = service.fetchAll(); 
-		System.out.println("List Atendentes, Count: " + Atendentes.size());
+		List<Atendente> atendente = service.fetchAll(); 
+		System.out.println("List Atendentes, Count: " + atendente.size());
 		
 		List<AtendenteDTO> dtoList = new ArrayList<AtendenteDTO>();
-		for(Atendente i: Atendentes) {
+		for(Atendente i: atendente) {
 			dtoList.add(mapper.map(i, AtendenteDTO.class));
 		}
 		return new ResponseEntity<List<AtendenteDTO>>(dtoList, HttpStatus.OK);
@@ -50,14 +51,14 @@ public class AtendenteController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Atendente> createMedico(@RequestBody AtendenteDTO atendenteDto) throws Exception {
+	public ResponseEntity<Atendente> createAtendente(@RequestBody AtendenteDTO atendenteDto) throws Exception {
 		ModelMapper mapper = new ModelMapper();
-		Atendente Atendente = mapper.map(atendenteDto, Atendente.class);
+		Atendente atendente = mapper.map(atendenteDto, Atendente.class);
 		
-		System.out.println("Create Atendente, " + Atendente.toString());
-		service.create(Atendente);
+		System.out.println("Create Atendente, " + atendente.toString());
+		service.create(atendente);
 		
-		return new ResponseEntity<Atendente>(Atendente, HttpStatus.CREATED);
+		return new ResponseEntity<Atendente>(atendente, HttpStatus.CREATED);
 	}
 	
 }

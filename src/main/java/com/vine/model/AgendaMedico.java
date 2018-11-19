@@ -2,11 +2,32 @@ package com.vine.model;
 
 import java.time.LocalDateTime;
 
-public class AgendaMedico {
-	private Medico medico;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Entity
+public class AgendaMedico {	
+	
+	@Id
+	@GeneratedValue
 	private Long id;
+	
+	@Column
+	@NotNull
 	private LocalDateTime dataHora;
+	
+	@Column
 	private boolean disponivel;
+	
+	@ManyToOne(targetEntity = Medico.class)
+	@JoinColumn(name = "medico_id")
+	private Medico medico;
 	
 	public Medico getMedico() {
 		return medico;

@@ -1,10 +1,13 @@
 package com.vine.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -35,6 +38,15 @@ public class Medico {
 	@Column
 	private String especialidade;
 	
+	@OneToMany(targetEntity = AgendaMedico.class)
+	private List<AgendaMedico> agendas;
+	
+	public List<AgendaMedico> getAgendas() {
+		return agendas;
+	}
+	public void setAgendas(List<AgendaMedico> agendas) {
+		this.agendas = agendas;
+	}
 	public Long getId() {
 		return id;
 	}
