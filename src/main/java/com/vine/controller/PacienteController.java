@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vine.dto.MedicoDTO;
 import com.vine.dto.PacienteDTO;
-import com.vine.model.Medico;
 import com.vine.model.Paciente;
 import com.vine.service.PacienteService;
 
