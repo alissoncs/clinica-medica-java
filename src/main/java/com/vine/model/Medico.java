@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
@@ -35,8 +38,9 @@ public class Medico {
 	@Column
 	private String telefone;
 	
-	@Column
-	private String especialidade;
+	@ManyToMany(targetEntity = Especialidade.class)
+	@JoinColumn(name = "especialidade_id")
+	private List<Especialidade> especialidades;
 	
 	@OneToMany(targetEntity = AgendaMedico.class)
 	private List<AgendaMedico> agendas;
@@ -83,10 +87,10 @@ public class Medico {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public String getEspecialidade() {
-		return especialidade;
+	public List<Especialidade> getEspecialidades() {
+		return especialidades;
 	}
-	public void setEspecialidade(String especialidade) {
-		this.especialidade = especialidade;
+	public void setEspecialidades(List<Especialidade> especialidades) {
+		this.especialidades = especialidades;
 	}
 }

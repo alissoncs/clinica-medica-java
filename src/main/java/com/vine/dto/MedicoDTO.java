@@ -1,5 +1,7 @@
 package com.vine.dto;
 
+import java.util.List;
+
 public class MedicoDTO {
 	
 	private Long id;
@@ -8,7 +10,7 @@ public class MedicoDTO {
 	private String crm;
 	private String celular;
 	private String telefone;
-	private String especialidade;
+	private List<Long> especialidades;
 	
 	public Long getId() {
 		return id;
@@ -46,11 +48,10 @@ public class MedicoDTO {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public String getEspecialidade() {
-		return especialidade;
+	public List<Long> getEspecialidades() {
+		return especialidades;
 	}
-	public void setEspecialidade(String especialidade) {
-		this.especialidade = especialidade;
+	public void setEspecialidades(List<Long> especialidades) {
+		this.especialidades = especialidades;
 	}
-	
 }

@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vine.dto.MedicoDTO;
 import com.vine.model.Medico;
 import com.vine.repository.MedicoRepository;
 
@@ -45,6 +46,12 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public Medico update(Medico i) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Medico createMedicoFromDto(MedicoDTO medicoDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
