@@ -6,6 +6,7 @@ public class AgendaMedicoDTO {
 	private Long medicoId;
 	private Long id;
 	private LocalDateTime dataHora;
+	private LocalDateTime dataHoraFim;
 	
 	public LocalDateTime getDataHora() {
 		return dataHora;
