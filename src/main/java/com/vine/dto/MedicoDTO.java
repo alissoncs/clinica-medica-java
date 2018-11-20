@@ -1,5 +1,6 @@
 package com.vine.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicoDTO {
@@ -10,7 +11,7 @@ public class MedicoDTO {
 	private String crm;
 	private String celular;
 	private String telefone;
-	private List<Long> especialidades;
+	private List<Long> especialidadesIds = new ArrayList<Long>();
 	
 	public Long getId() {
 		return id;
@@ -48,10 +49,10 @@ public class MedicoDTO {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public List<Long> getEspecialidades() {
-		return especialidades;
+	public List<Long> getEspecialidadesIds() {
+		return especialidadesIds;
 	}
-	public void setEspecialidades(List<Long> especialidades) {
-		this.especialidades = especialidades;
+	public void setEspecialidadeIds(List<Long> especialidades) {
+		this.especialidadesIds = especialidades;
 	}
 }

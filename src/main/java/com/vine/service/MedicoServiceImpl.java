@@ -21,7 +21,11 @@ public class MedicoServiceImpl implements MedicoService {
 		Medico medico = dao.getOne(id);
 		if(!Hibernate.isInitialized(medico.getAgendas()))
 			Hibernate.initialize(medico.getAgendas());
-	
+		
+		if(!Hibernate.isInitialized(medico.getEspecialidades()))
+			Hibernate.initialize(medico.getEspecialidades());
+		
+		medico.getEspecialidades();
 		medico.getAgendas();
 		return medico;
 	}

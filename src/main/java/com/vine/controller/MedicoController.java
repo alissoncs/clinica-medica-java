@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vine.dto.MedicoDTO;
+import com.vine.model.Especialidade;
 import com.vine.model.Medico;
+import com.vine.service.EspecialidadeService;
 import com.vine.service.MedicoService;
 
 @RestController
@@ -26,6 +28,9 @@ public class MedicoController {
 	@Autowired
 	public MedicoService service;
 	
+	@Autowired
+	public EspecialidadeService especialidadeService;
+	
 	@GetMapping
 	public ResponseEntity<List<MedicoDTO>> getMedicos() {
 		List<Medico> medicos = service.fetchAll(); 
@@ -34,7 +39,13 @@ public class MedicoController {
 		
 		List<MedicoDTO> dtoList = new ArrayList<MedicoDTO>();
 		for(Medico i: medicos) {
-			dtoList.add(mapper.map(i, MedicoDTO.class));
+			MedicoDTO dtoItem = mapper.map(i, MedicoDTO.class);
+			if (i.getEspecialidades() != null) {
+				for(Especialidade e: i.getEspecialidades()) {
+					dtoItem.getEspecialidadesIds().add(e.getId());
+				}
+			}
+			dtoList.add(dtoItem);
 		}
 		return new ResponseEntity<List<MedicoDTO>>(dtoList, HttpStatus.OK);
 	}
@@ -50,13 +61,28 @@ public class MedicoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Medico> createMedico(@RequestBody MedicoDTO medicoDto) throws Exception {
+	public ResponseEntity<MedicoDTO> createMedico(@RequestBody MedicoDTO medicoDto) throws Exception {
 		ModelMapper mapper = new ModelMapper();
-		Medico m = mapper.map(medicoDto, Medico.class);
+		Medico medico = mapper.map(medicoDto, Medico.class);
 		
-		System.out.println("Create Medico, " + m.toString());
-		service.create(m);
+		if (medicoDto.getEspecialidadesIds() != null) {
+			List<Especialidade> especs = new ArrayList<Especialidade>();
+			List<Long> idsEspecialidades = new ArrayList<Long>();
+			for (Long idEspecialidade: medicoDto.getEspecialidadesIds()) {
+				if (especialidadeService.exists(idEspecialidade)) {
+					Especialidade e = especialidadeService.fetchById(idEspecialidade);
+					especs.add(e);
+					idsEspecialidades.add(idEspecialidade);
+				}
+			}
+			medicoDto.setEspecialidadeIds(idsEspecialidades);
+			medico.setEspecialidades(especs);
+		}
 		
-		return new ResponseEntity<Medico>(m, HttpStatus.CREATED);
+		System.out.println("Create Medico, " + medico.toString());
+		service.create(medico);
+		medicoDto.setId(medico.getId());
+		
+		return new ResponseEntity<MedicoDTO>(medicoDto, HttpStatus.CREATED);
 	}
 }

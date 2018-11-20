@@ -39,4 +39,9 @@ public class EspecialidadeServiceImpl implements EspecialidadeService {
 		return dao.save(i);
 	}
 
+	@Override
+	public boolean exists(Long id) throws Exception {
+		return dao.existsById(id);
+	}
+
 }
