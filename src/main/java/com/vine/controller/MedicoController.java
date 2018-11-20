@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vine.dto.ConsultaDTO;
 import com.vine.dto.MedicoDTO;
+import com.vine.model.Consulta;
 import com.vine.model.Especialidade;
 import com.vine.model.Medico;
+import com.vine.service.ConsultaService;
 import com.vine.service.EspecialidadeService;
 import com.vine.service.MedicoService;
 
@@ -30,6 +32,9 @@ public class MedicoController {
 	
 	@Autowired
 	public EspecialidadeService especialidadeService;
+	
+	@Autowired
+	public ConsultaService consultaService;
 	
 	@GetMapping
 	public ResponseEntity<List<MedicoDTO>> getMedicos() {
@@ -58,6 +63,20 @@ public class MedicoController {
 		ModelMapper mapper = new ModelMapper();
 		MedicoDTO m = mapper.map(medico, MedicoDTO.class);
 		return new ResponseEntity<MedicoDTO>(m, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}/consultas")
+	public ResponseEntity<List<ConsultaDTO>> getConsultas(@PathVariable Long id) throws Exception {
+		Medico medico = service.fetchById(id);
+		ModelMapper mapper = new ModelMapper();
+		List<Consulta> consultas = consultaService.fetchByMedicoId(id);
+		List<ConsultaDTO> dtoList = new ArrayList<ConsultaDTO>();
+		for(Consulta c: consultas) {
+			ConsultaDTO dto = mapper.map(c, ConsultaDTO.class);
+			dtoList.add(dto);
+		}
+		
+		return new ResponseEntity<List<ConsultaDTO>>(dtoList, HttpStatus.OK);
 	}
 	
 	@PostMapping

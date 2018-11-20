@@ -28,7 +28,7 @@ public class Consulta {
 	@NotNull
 	private Atendente atendente;
 	
-	@ManyToOne(targetEntity = Atendente.class)
+	@ManyToOne(targetEntity = Paciente.class)
 	@JoinColumn(name = "paciente_id")
 	@NotNull
 	private Paciente paciente;
@@ -56,6 +56,7 @@ public class Consulta {
 		this.setPaciente(paciente);
 		this.setDataHora(dataHora);
 	}
+	public Consulta() {}
 	
 	public Long getId() {
 		return id;
@@ -87,7 +88,7 @@ public class Consulta {
 	public void setDataHora(LocalDateTime dataHora) {
 		this.dataHora = dataHora;
 	}
-	public Status isStatus() {
+	public Status getStatus() {
 		return status;
 	}
 	public void setStatus(Status status) {

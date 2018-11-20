@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vine.dto.ConsultaDTO;
 import com.vine.dto.PacienteDTO;
+import com.vine.model.Consulta;
+import com.vine.model.Medico;
 import com.vine.model.Paciente;
+import com.vine.service.ConsultaService;
 import com.vine.service.PacienteService;
 
 @RestController
@@ -24,6 +28,9 @@ public class PacienteController {
 	
 	@Autowired
 	public PacienteService service;
+	
+	@Autowired
+	public ConsultaService consultaService;
 	
 	@GetMapping
 	public ResponseEntity<List<PacienteDTO>> getPacientes() {
@@ -50,14 +57,39 @@ public class PacienteController {
 		return new ResponseEntity<PacienteDTO>(dto, HttpStatus.OK);
 	}
 	
-	@PostMapping
-	public ResponseEntity<Paciente> createMedico(@RequestBody PacienteDTO pacienteDto) throws Exception {
+	@GetMapping("/{id}/consultas")
+	public ResponseEntity<List<ConsultaDTO>> getConsultas(@PathVariable Long id) throws Exception {
+		// verifica se o paciente existe na base
+		service.fetchById(id);
+		
 		ModelMapper mapper = new ModelMapper();
+		
+		// carrega consultas por paciente id
+		List<Consulta> consultas = consultaService.fetchByPacienteId(id);
+		
+		// converter para DTO
+		List<ConsultaDTO> dtoList = new ArrayList<ConsultaDTO>();
+		for(Consulta c: consultas) {
+			ConsultaDTO dto = mapper.map(c, ConsultaDTO.class);
+			dtoList.add(dto);
+		}
+		
+		return new ResponseEntity<List<ConsultaDTO>>(dtoList, HttpStatus.OK);
+	}
+	
+	@PostMapping
+	public ResponseEntity<PacienteDTO> createPaciente(@RequestBody PacienteDTO pacienteDto) throws Exception {
+		ModelMapper mapper = new ModelMapper();
+		// converte de DTO para hibernate entity
 		Paciente paciente = mapper.map(pacienteDto, Paciente.class);
 		
 		System.out.println("Create Paciente, " + paciente.toString());
-		service.create(paciente);
 		
-		return new ResponseEntity<Paciente>(paciente, HttpStatus.CREATED);
+		// salvar
+		service.create(paciente);
+		pacienteDto.setId(paciente.getId());
+		
+		// retorna o mesmo objeto
+		return new ResponseEntity<PacienteDTO>(pacienteDto, HttpStatus.CREATED);
 	}
 }

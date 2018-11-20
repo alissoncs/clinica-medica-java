@@ -6,8 +6,15 @@ public class AgendaMedicoDTO {
 	private Long medicoId;
 	private Long id;
 	private LocalDateTime dataHora;
-	private LocalDateTime dataHoraFim;
 	
+	private boolean disponivel = true;
+
+	public boolean isDisponivel() {
+		return disponivel;
+	}
+	public void setDisponivel(boolean disponivel) {
+		this.disponivel = disponivel;
+	}
 	public LocalDateTime getDataHora() {
 		return dataHora;
 	}
